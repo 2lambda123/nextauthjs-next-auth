@@ -190,6 +190,7 @@ export async function handleLogin(
           // If you trust the oauth provider to correctly verify email addresses, you can opt-in to
           // account linking even when the user is not signed-in.
           user = userByEmail
+          isNewUser = false
         } else {
           // We end up here when we don't have an account with the same [provider].id *BUT*
           // we do already have an account with the same email address as the one in the
@@ -212,6 +213,7 @@ export async function handleLogin(
         // create a new session for them so they are signed in with it.
         const { id: _, ...newUser } = { ...profile, emailVerified: null }
         user = await createUser(newUser)
+        isNewUser = true
       }
       await events.createUser?.({ user })
 
@@ -226,7 +228,7 @@ export async function handleLogin(
             expires: fromDate(options.session.maxAge),
           })
 
-      return { session, user, isNewUser: true }
+      return { session, user, isNewUser }
     }
   }
 
