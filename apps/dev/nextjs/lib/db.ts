@@ -1,30 +1,12 @@
-/**
- * <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", padding: 16}}>
- *  <p style={{fontWeight: "normal"}}>Official <a href="https://docs.upstash.com/redis">Upstash Redis</a> adapter for Auth.js / NextAuth.js.</p>
- *  <a href="https://docs.upstash.com/redis">
- *   <img style={{display: "block"}} src="https://authjs.dev/img/adapters/upstash-redis.svg" width="60"/>
- *  </a>
- * </div>
- *
- * ## Installation
- *
- * ```bash npm2yarn2pnpm
- * npm install @upstash/redis @auth/upstash-redis-adapter
- * ```
- *
- * @module @auth/upstash-redis-adapter
- */
+// Copy from RedisUpstashAdapter
 import type {
   Adapter,
   AdapterUser,
   AdapterAccount,
   AdapterSession,
-  VerificationToken,
 } from "@auth/core/adapters"
-import type { Redis } from "@upstash/redis"
 
-/** This is the interface of the Upstash Redis adapter options. */
-export interface UpstashRedisAdapterOptions {
+export interface AdapterOptions {
   /**
    * The base prefix for your keys
    */
@@ -76,78 +58,20 @@ function isDate(value: any) {
   return value && isoDateRE.test(value) && !isNaN(Date.parse(value))
 }
 
-export function hydrateDates(json: object) {
-  return Object.entries(json).reduce((acc, [key, val]) => {
+export function hydrateDates(text: string) {
+  return Object.entries(JSON.parse(text)).reduce((acc, [key, val]) => {
     acc[key] = isDate(val) ? new Date(val as string) : val
     return acc
   }, {} as any)
 }
 
-/**
- * ## Setup
- *
- * Configure Auth.js to use the Upstash Redis Adapter:
- *
- * ```javascript title="pages/api/auth/[...nextauth].js"
- * import NextAuth from "next-auth"
- * import GoogleProvider from "next-auth/providers/google"
- * import { UpstashRedisAdapter } from "@auth/upstash-redis-adapter"
- * import upstashRedisClient from "@upstash/redis"
- *
- * const redis = upstashRedisClient(
- *   process.env.UPSTASH_REDIS_URL,
- *   process.env.UPSTASH_REDIS_TOKEN
- * )
- *
- * export default NextAuth({
- *   adapter: UpstashRedisAdapter(redis),
- *   providers: [
- *     GoogleProvider({
- *       clientId: process.env.GOOGLE_CLIENT_ID,
- *       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
- *     }),
- *   ],
- * })
- * ```
- *
- * ## Advanced usage
- *
- * ### Using multiple apps with a single Upstash Redis instance
- *
- * The Upstash free-tier allows for only one Redis instance. If you have multiple Auth.js connected apps using this instance, you need different key prefixes for every app.
- *
- * You can change the prefixes by passing an `options` object as the second argument to the adapter factory function.
- *
- * The default values for this object are:
- *
- * ```js
- * const defaultOptions = {
- *   baseKeyPrefix: "",
- *   accountKeyPrefix: "user:account:",
- *   accountByUserIdPrefix: "user:account:by-user-id:",
- *   emailKeyPrefix: "user:email:",
- *   sessionKeyPrefix: "user:session:",
- *   sessionByUserIdKeyPrefix: "user:session:by-user-id:",
- *   userKeyPrefix: "user:",
- *   verificationTokenKeyPrefix: "user:token:",
- * }
- * ```
- *
- * Usually changing the `baseKeyPrefix` should be enough for this scenario, but for more custom setups, you can also change the prefixes of every single key.
- *
- * Example:
- *
- * ```js
- * export default NextAuth({
- *   ...
- *   adapter: UpstashRedisAdapter(redis, {baseKeyPrefix: "app2:"})
- *   ...
- * })
- * ```
- */
-export function UpstashRedisAdapter(
-  client: Redis,
-  options: UpstashRedisAdapterOptions = {}
+export function TestAdapter(
+  client: {
+    getItem: (key: string) => Promise<string | null>
+    setItem: (key: string, value: string) => Promise<void>
+    deleteItems: (...keys: string[]) => Promise<void>
+  },
+  options: AdapterOptions = {}
 ): Adapter {
   const mergedOptions = {
     ...defaultOptions,
@@ -167,17 +91,17 @@ export function UpstashRedisAdapter(
     baseKeyPrefix + mergedOptions.verificationTokenKeyPrefix
 
   const setObjectAsJson = async (key: string, obj: any) =>
-    await client.set(key, JSON.stringify(obj))
+    await client.setItem(key, JSON.stringify(obj))
 
   const setAccount = async (id: string, account: AdapterAccount) => {
     const accountKey = accountKeyPrefix + id
     await setObjectAsJson(accountKey, account)
-    await client.set(accountByUserIdPrefix + account.userId, accountKey)
+    await client.setItem(accountByUserIdPrefix + account.userId, accountKey)
     return account
   }
 
   const getAccount = async (id: string) => {
-    const account = await client.get<AdapterAccount>(accountKeyPrefix + id)
+    const account = await client.getItem(accountKeyPrefix + id)
     if (!account) return null
     return hydrateDates(account)
   }
@@ -188,12 +112,12 @@ export function UpstashRedisAdapter(
   ): Promise<AdapterSession> => {
     const sessionKey = sessionKeyPrefix + id
     await setObjectAsJson(sessionKey, session)
-    await client.set(sessionByUserIdKeyPrefix + session.userId, sessionKey)
+    await client.setItem(sessionByUserIdKeyPrefix + session.userId, sessionKey)
     return session
   }
 
   const getSession = async (id: string) => {
-    const session = await client.get<AdapterSession>(sessionKeyPrefix + id)
+    const session = await client.getItem(sessionKeyPrefix + id)
     if (!session) return null
     return hydrateDates(session)
   }
@@ -203,12 +127,12 @@ export function UpstashRedisAdapter(
     user: AdapterUser
   ): Promise<AdapterUser> => {
     await setObjectAsJson(userKeyPrefix + id, user)
-    await client.set(`${emailKeyPrefix}${user.email as string}`, id)
+    await client.setItem(`${emailKeyPrefix}${user.email as string}`, id)
     return user
   }
 
   const getUser = async (id: string) => {
-    const user = await client.get<AdapterUser>(userKeyPrefix + id)
+    const user = await client.getItem(userKeyPrefix + id)
     if (!user) return null
     return hydrateDates(user)
   }
@@ -222,7 +146,7 @@ export function UpstashRedisAdapter(
     },
     getUser,
     async getUserByTokenId(email) {
-      const userId = await client.get<string>(emailKeyPrefix + email)
+      const userId = await client.getItem(emailKeyPrefix + email)
       if (!userId) {
         return null
       }
@@ -258,7 +182,7 @@ export function UpstashRedisAdapter(
       return await setSession(updates.sessionToken, { ...session, ...updates })
     },
     async deleteSession(sessionToken) {
-      await client.del(sessionKeyPrefix + sessionToken)
+      await client.deleteItems(sessionKeyPrefix + sessionToken)
     },
     async createVerificationToken(verificationToken) {
       await setObjectAsJson(
@@ -277,10 +201,10 @@ export function UpstashRedisAdapter(
         ":" +
         verificationToken.token
 
-      const token = await client.get<VerificationToken>(tokenKey)
+      const token = await client.getItem(tokenKey)
       if (!token) return null
 
-      await client.del(tokenKey)
+      await client.deleteItems(tokenKey)
       return hydrateDates(token)
       // return reviveFromJson(token)
     },
@@ -289,7 +213,7 @@ export function UpstashRedisAdapter(
       const dbAccount = await getAccount(id)
       if (!dbAccount) return
       const accountKey = `${accountKeyPrefix}${id}`
-      await client.del(
+      await client.deleteItems(
         accountKey,
         `${accountByUserIdPrefix} + ${dbAccount.userId as string}`
       )
@@ -298,10 +222,10 @@ export function UpstashRedisAdapter(
       const user = await getUser(userId)
       if (!user) return
       const accountByUserKey = accountByUserIdPrefix + userId
-      const accountKey = await client.get<string>(accountByUserKey)
+      const accountKey = await client.getItem(accountByUserKey)
       const sessionByUserIdKey = sessionByUserIdKeyPrefix + userId
-      const sessionKey = await client.get<string>(sessionByUserIdKey)
-      await client.del(
+      const sessionKey = await client.getItem(sessionByUserIdKey)
+      await client.deleteItems(
         userKeyPrefix + userId,
         `${emailKeyPrefix}${user.email as string}`,
         accountKey as string,

@@ -13,7 +13,7 @@ import Credentials from "@auth/core/providers/credentials"
 import Descope from "@auth/core/providers/descope"
 import Discord from "@auth/core/providers/discord"
 import DuendeIDS6 from "@auth/core/providers/duende-identity-server6"
-// import Email from "@auth/core/providers/email"
+import SmtpEmail from "@auth/core/providers/email-smtp"
 import Facebook from "@auth/core/providers/facebook"
 import Foursquare from "@auth/core/providers/foursquare"
 import Freshbooks from "@auth/core/providers/freshbooks"
@@ -39,6 +39,9 @@ import Yandex from "@auth/core/providers/yandex"
 import Vk from "@auth/core/providers/vk"
 import Wikimedia from "@auth/core/providers/wikimedia"
 import WorkOS from "@auth/core/providers/workos"
+import { AdapterUser } from "next-auth/adapters"
+import Token from "@auth/core/providers/token"
+import { TestAdapter } from "lib/db"
 
 // // Prisma
 // import { PrismaClient } from "@prisma/client"
@@ -71,8 +74,22 @@ import WorkOS from "@auth/core/providers/workos"
 //   secret: process.env.SUPABASE_SERVICE_ROLE_KEY,
 // })
 
+const db = {}
+
 export const authConfig: AuthConfig = {
-  // adapter,
+  adapter: TestAdapter({
+    getItem(key) {
+      return db[key]
+    },
+    setItem: function (key: string, value: string): Promise<void> {
+      db[key] = value
+      return Promise.resolve()
+    },
+    deleteItems: function (...keys: string[]): Promise<void> {
+      keys.forEach((key) => delete db[key])
+      return Promise.resolve()
+    },
+  }),
   debug: process.env.NODE_ENV !== "production",
   theme: {
     logo: "https://next-auth.js.org/img/logo/logo-sm.png",
@@ -137,11 +154,19 @@ export const authConfig: AuthConfig = {
 
 if (authConfig.adapter) {
   // TODO:
-  // authOptions.providers.unshift(
-  //   // NOTE: You can start a fake e-mail server with `pnpm email`
-  //   // and then go to `http://localhost:1080` in the browser
-  //   Email({ server: "smtp://127.0.0.1:1025?tls.rejectUnauthorized=false" })
-  // )
+  authConfig.providers.unshift(
+    // NOTE: You can start a fake e-mail server with `pnpm email`
+    // and then go to `http://localhost:1080` in the browser
+    // SmtpEmail({ server: "smtp://127.0.0.1:1025?tls.rejectUnauthorized=false" }),
+    Token({
+      id: "token",
+      name: "Token",
+      type: "token",
+      async sendVerificationRequest(params) {
+        console.log({ verificationUrl: params.url })
+      },
+    })
+  )
 }
 
 // TODO: move to next-auth/edge
