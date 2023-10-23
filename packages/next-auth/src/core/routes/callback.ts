@@ -1,5 +1,5 @@
 import oAuthCallback from "../lib/oauth/callback"
-import callbackHandler from "../lib/callback-handler"
+import callbackHandler, { checkIfUserIsNew } from "../lib/callback-handler"
 import { hashToken } from "../lib/utils"
 import getAdapterUserFromEmail from "../lib/email/getUserFromEmail"
 
@@ -90,10 +90,17 @@ export default async function callback(params: {
         }
 
         try {
+          const isNewUser = await checkIfUserIsNew({
+            profile,
+            account,
+            options,
+          })
+
           const isAllowed = await callbacks.signIn({
             user: userOrProfile,
             account,
             profile: OAuthProfile,
+            isNewUser,
           })
           if (!isAllowed) {
             return { redirect: `${url}/error?error=AccessDenied`, cookies }
@@ -232,9 +239,16 @@ export default async function callback(params: {
 
       // Check if user is allowed to sign in
       try {
+        const isNewUser = await checkIfUserIsNew({
+          profile,
+          account,
+          options,
+        })
+
         const signInCallbackResponse = await callbacks.signIn({
           user: profile,
           account,
+          isNewUser,
         })
         if (!signInCallbackResponse) {
           return { redirect: `${url}/error?error=AccessDenied`, cookies }
@@ -363,6 +377,7 @@ export default async function callback(params: {
         // @ts-expect-error
         account,
         credentials,
+        isNewUser: false,
       })
       if (!isAllowed) {
         return {

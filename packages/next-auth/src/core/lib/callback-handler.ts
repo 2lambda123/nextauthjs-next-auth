@@ -9,6 +9,66 @@ import type { SessionToken } from "./cookie"
 import { OAuthConfig } from "src/providers"
 
 /**
+ *  This function validates the account object
+ */
+function accountValidation(account: Account | null) {
+  if (!account?.providerAccountId || !account.type)
+    throw new Error("Missing or invalid provider account")
+  if (!["email", "oauth"].includes(account.type))
+    throw new Error("Provider not supported")
+
+  return account
+}
+
+/**
+ * This function checks if a user is new and needs to be signed up, or if they
+ * are an existing user and need to be signed in. This is useful because it
+ * allows us to use this value when providing the isNewUser argument to the
+ * signIn callback.
+ */
+export async function checkIfUserIsNew(params: {
+  profile: User | AdapterUser | { email: string }
+  account: Account | null
+  options: InternalOptions
+}) {
+  const { profile: _profile, account: _account, options } = params
+
+  const account = accountValidation(_account)
+
+  const { adapter } = options
+
+  if (!adapter) {
+    return undefined
+  }
+
+  const { getUserByAccount, getUserByEmail } = adapter
+
+  const profile = _profile as AdapterUser
+  const providerType = account.type as "oauth" | "email"
+
+  const userByEmail = await getUserByEmail(profile.email)
+
+  // if the user's email exists, it's not a new user
+  if (userByEmail) return false
+
+  // if the user's email doesn't exist and they are using the email
+  // provider, then they are a new user
+  if (providerType === "email") return true
+
+  // if they are using an OAuth provider, check if the account is already
+  // associated with a user account, if it is, then they are not a new user
+  const userByAccount = await getUserByAccount({
+    providerAccountId: account.providerAccountId,
+    provider: account.provider,
+  })
+  if (userByAccount) return false
+
+  // if they are using an OAuth provider and the account is not associated
+  // with a user account, then they are a new user
+  return true
+}
+
+/**
  * This function handles the complex flow of signing users in, and either creating,
  * linking (or not linking) accounts depending on if the user is currently logged
  * in, if they have account already and the authentication mechanism they are using.
@@ -26,12 +86,9 @@ export default async function callbackHandler(params: {
   account: Account | null
   options: InternalOptions
 }) {
-  const { sessionToken, profile: _profile, account, options } = params
-  // Input validation
-  if (!account?.providerAccountId || !account.type)
-    throw new Error("Missing or invalid provider account")
-  if (!["email", "oauth"].includes(account.type))
-    throw new Error("Provider not supported")
+  const { sessionToken, profile: _profile, account: _account, options } = params
+
+  const account = accountValidation(_account)
 
   const {
     adapter,
