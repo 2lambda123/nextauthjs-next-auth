@@ -122,7 +122,7 @@ export async function handleOAuth(
     throw new Error("TODO: Handle www-authenticate challenges as needed")
   }
 
-  let profile: Profile = {} 
+  let profile: Profile = {}
   let tokens: TokenSet & Pick<Account, "expires_at">
 
   if (provider.type === "oidc") {
@@ -140,6 +140,11 @@ export async function handleOAuth(
     }
 
     profile = o.getValidatedIdTokenClaims(result)
+
+    if (provider.profileConform) {
+      profile = provider.profileConform(profile, query);
+    }
+
     tokens = result
   } else {
     tokens = await o.processAuthorizationCodeOAuth2Response(
@@ -187,7 +192,7 @@ async function getUserAndAccount(
   OAuthProfile: Profile,
   provider: OAuthConfigInternal<any>,
   tokens: TokenSet,
-  logger: LoggerInstance
+  logger: LoggerInstance,
 ) {
   try {
     const user = await provider.profile(OAuthProfile, tokens)

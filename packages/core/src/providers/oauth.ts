@@ -92,7 +92,7 @@ export type UserinfoEndpointHandler = EndpointHandler<
 
 export type ProfileCallback<Profile> = (
   profile: Profile,
-  tokens: TokenSet
+  tokens: TokenSet,
 ) => Awaitable<User>
 
 export type AccountCallback = (tokens: TokenSet) => TokenSet | undefined | void
@@ -109,7 +109,7 @@ export interface OAuthProviderButtonStyles {
 /** TODO: Document */
 export interface OAuth2Config<Profile>
   extends CommonProviderOptions,
-    PartialIssuer {
+  PartialIssuer {
   /**
    * Identifies the provider when you want to sign in to
    * a specific provider.
@@ -150,7 +150,7 @@ export interface OAuth2Config<Profile>
    *
    * @see [Database Adapter: User model](https://authjs.dev/reference/core/adapters#user)
    */
-  profile?: ProfileCallback<Profile>
+  profile?: ProfileCallback<Profile>,
   /**
    * Receives the full {@link TokenSet} returned by the OAuth provider, and returns a subset.
    * It is used to create the account associated with a user in the database.
@@ -222,6 +222,16 @@ export interface OAuth2Config<Profile>
   allowDangerousEmailAccountLinking?: boolean
   redirectProxyUrl?: AuthConfig["redirectProxyUrl"]
   /**
+   * If the profile information is not fully returned in the id_token,
+   * the provider can add additional information in this function.
+   * 
+   * Currently only used by the `apple` provider, as the user information
+   * is returned in the authorization response, instead of the id_token.
+   * 
+   * @internal
+   */
+  profileConform?: (profile: Profile, query: any) => Profile
+  /**
    * The options provided by the user.
    * We will perform a deep-merge of these values
    * with the default configuration.
@@ -276,9 +286,9 @@ export type OAuthConfigInternal<Profile> = Omit<
    */
   redirectProxyUrl?: OAuth2Config<Profile>["redirectProxyUrl"]
 } & Pick<
-    Required<OAuthConfig<Profile>>,
-    "clientId" | "checks" | "profile" | "account"
-  >
+  Required<OAuthConfig<Profile>>,
+  "clientId" | "checks" | "profile" | "account"
+>
 
 export type OIDCConfigInternal<Profile> = OAuthConfigInternal<Profile> & {
   checks: OIDCConfig<Profile>["checks"]

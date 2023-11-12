@@ -158,8 +158,35 @@ export default function Apple<P extends AppleProfile>(
     name: "Apple",
     type: "oidc",
     issuer: "https://appleid.apple.com",
+    checks: ["pkce", "state"],
     authorization: {
-      params: { scope: "name email", response_mode: "form_post" },
+      url: 'https://appleid.apple.com/auth/authorize',
+      params: {
+        scope: "name email",
+        response_mode: "form_post",
+      }
+    },
+    // Provide a token endpoint to omit the discovery step.
+    // This is required because Apple does not provide a userinfo endpoint.
+    token: 'https://appleid.apple.com/auth/token',
+    profileConform(profile, query) {
+      if (profile.name !== undefined) {
+        console.warn(
+          "'Name' is not undefined. Redundant workaround, please open an issue."
+        )
+      }
+
+      if (query.user) {
+        const user = JSON.parse(query.user);
+        if (user.name) {
+          return {
+            ...profile,
+            name: Object.values(user.name).join(" "),
+          }
+        }
+      }
+
+      return profile;
     },
     profile(profile) {
       return {
@@ -168,6 +195,9 @@ export default function Apple<P extends AppleProfile>(
         email: profile.email,
         image: null,
       }
+    },
+    client: {
+      token_endpoint_auth_method: "client_secret_post",
     },
     style: {
       logo: "/apple.svg",
