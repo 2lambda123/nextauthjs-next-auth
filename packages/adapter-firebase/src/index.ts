@@ -55,6 +55,24 @@ export interface FirebaseAdapterConfig extends AppOptions {
    * ```
    */
   namingStrategy?: "snake_case"
+
+  /**
+   * use this option if you would like to use a custom prefix for the collections in the database.
+   *
+   *
+   * @example
+   * ```ts title="pages/api/auth/[...nextauth].ts"
+   * import NextAuth from "next-auth"
+   * import { FirestoreAdapter } from "@auth/firebase-adapter"
+   *
+   * export default NextAuth({
+   *  adapter: FirestoreAdapter({ collectionPrefix: "authjs_"})
+   *  // ...
+   * })
+   * ```
+   */
+
+  collectionPrefix?: string
 }
 
 /**
@@ -131,13 +149,16 @@ export interface FirebaseAdapterConfig extends AppOptions {
 export function FirestoreAdapter(
   config?: FirebaseAdapterConfig | Firestore
 ): Adapter {
-  const { db, namingStrategy = "default" } =
-    config instanceof Firestore
-      ? { db: config }
-      : { ...config, db: config?.firestore ?? initFirestore(config) }
+  const {
+    db,
+    namingStrategy = "default",
+    collectionPrefix = "",
+  } = config instanceof Firestore
+    ? { db: config }
+    : { ...config, db: config?.firestore ?? initFirestore(config) }
 
   const preferSnakeCase = namingStrategy === "snake_case"
-  const C = collectionsFactory(db, preferSnakeCase)
+  const C = collectionsFactory(db, preferSnakeCase, collectionPrefix)
   const mapper = mapFieldsFactory(preferSnakeCase)
 
   return {
@@ -394,21 +415,23 @@ export async function getDoc<T>(
 /** @internal */
 export function collectionsFactory(
   db: FirebaseFirestore.Firestore,
-  preferSnakeCase = false
+  preferSnakeCase = false,
+  collectionPrefix = ""
 ) {
   return {
     users: db
-      .collection("users")
+      .collection(collectionPrefix + "users")
       .withConverter(getConverter<AdapterUser>({ preferSnakeCase })),
     sessions: db
-      .collection("sessions")
+      .collection(collectionPrefix + "sessions")
       .withConverter(getConverter<AdapterSession>({ preferSnakeCase })),
     accounts: db
-      .collection("accounts")
+      .collection(collectionPrefix + "accounts")
       .withConverter(getConverter<AdapterAccount>({ preferSnakeCase })),
     verification_tokens: db
       .collection(
-        preferSnakeCase ? "verification_tokens" : "verificationTokens"
+        collectionPrefix + 
+          (preferSnakeCase ? "verification_tokens" : "verificationTokens")
       )
       .withConverter(
         getConverter<VerificationToken>({ preferSnakeCase, excludeId: true })
