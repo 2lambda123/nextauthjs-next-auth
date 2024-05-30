@@ -7,6 +7,7 @@ import AzureB2C from "next-auth/providers/azure-ad-b2c"
 import BoxyHQSAML from "next-auth/providers/boxyhq-saml"
 import Cognito from "next-auth/providers/cognito"
 import Coinbase from "next-auth/providers/coinbase"
+import Credentials from "next-auth/providers/credentials"
 import Discord from "next-auth/providers/discord"
 import Dropbox from "next-auth/providers/dropbox"
 import Facebook from "next-auth/providers/facebook"
@@ -33,6 +34,7 @@ import memoryDriver from "unstorage/drivers/memory"
 import vercelKVDriver from "unstorage/drivers/vercel-kv"
 import { UnstorageAdapter } from "@auth/unstorage-adapter"
 import type { NextAuthConfig } from "next-auth"
+import type { Provider } from "next-auth/providers"
 
 const storage = createStorage({
   driver: process.env.VERCEL
@@ -93,7 +95,20 @@ const config = {
       connection: process.env.AUTH_WORKOS_CONNECTION!,
     }),
     Zoom,
-  ],
+    process.env.TEST_DOCKER
+      ? Credentials({
+          credentials: { password: { label: "Password", type: "password" } },
+          authorize(c) {
+            if (c.password !== "password") return null
+            return {
+              id: "test",
+              name: "Test User",
+              email: "test@example.com",
+            }
+          },
+        })
+      : undefined,
+  ].filter(Boolean) as Provider[],
   basePath: "/auth",
   callbacks: {
     authorized({ request, auth }) {
