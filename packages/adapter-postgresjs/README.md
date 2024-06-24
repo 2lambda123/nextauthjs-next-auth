@@ -1,4 +1,3 @@
-<p align="center">
   <br/>
   <a href="https://authjs.dev" target="_blank">
     <img height="64px" src="https://authjs.dev/img/logo-sm.png" />
@@ -25,4 +24,4 @@
 
 ---
 
-Check out the documentation at [authjs.dev](https://authjs.dev/reference/adapter/pg).
+Check out the documentation at [authjs.dev](https://authjs.dev/reference/adapter/postgresjs).

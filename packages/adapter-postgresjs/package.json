@@ -1,7 +1,7 @@
 {
   "name": "@auth/postgresjs-adapter",
   "version": "1.2.0",
-  "description": "Postgres adapter for next-auth.",
+  "description": "PostgresJS adapter for next-auth.",
   "homepage": "https://authjs.dev",
   "repository": "https://github.com/nextauthjs/next-auth",
   "bugs": {
@@ -44,6 +44,7 @@
     "postgres": "^3"
   },
   "devDependencies": {
-    "postgres": "3.4.4"
+    "postgres": "3.4.4",
+    "nanoid": "5.0.7"
   }
 }

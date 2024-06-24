@@ -9,7 +9,7 @@
  * ## Installation
  *
  * ```bash npm2yarn
- * npm install next-auth @auth/postgresjs-adapter postgres
+ * npm install next-auth@beta @auth/postgresjs-adapter postgres
  * ```
  *
  * @module @auth/postgresjs-adapter
@@ -23,7 +23,8 @@ import type {
   AdapterSession,
   AdapterAuthenticator,
 } from "@auth/core/adapters"
-import postgres from "postgres"
+import type postgres from "postgres"
+import { nanoid } from "./id.js"
 type UserSession = AdapterSession & AdapterUser
 type SQL = postgres.Sql<{}>
 export default function PostgresJSAdapter(sql: SQL): Adapter {
@@ -36,7 +37,7 @@ export default function PostgresJSAdapter(sql: SQL): Adapter {
         expires: v.expires,
         token: v.token,
       }
-      await sql`insert into verification_token ${sql({ data })}`
+      await sql`insert into verification_token ${sql(data)}`
       return v
     },
     async useVerificationToken({
@@ -48,17 +49,17 @@ export default function PostgresJSAdapter(sql: SQL): Adapter {
     }): Promise<VerificationToken> {
       const [res] = await sql<
         VerificationToken[]
-      >`delete from verification_token
-      where identifier = ${identifier} and token = ${token}
-      RETURNING identifier, expires, token`
+      >`delete from verification_token where identifier = ${identifier} and token = ${token} RETURNING identifier, expires, token`
       return res ?? null
     },
-    async createUser(user: Omit<AdapterUser, "id">) {
-      const { name, email, emailVerified, image } = user
-      const [res] = await sql<
-        AdapterUser[]
-      >`INSERT INTO users (name, email, "emailVerified", image) 
-      VALUES (${name!}, ${email}, ${emailVerified}, ${image!}) RETURNING id, name, email, "emailVerified", image`
+    async createUser(data: Omit<AdapterUser, "id">): Promise<AdapterUser> {
+      const user = {
+        ...data,
+        id: nanoid(),
+      }
+      const [res] = await sql<AdapterUser[]>`INSERT INTO users ${sql(
+        user
+      )} RETURNING *`
       return res
     },
     async getUser(id) {
@@ -114,9 +115,7 @@ export default function PostgresJSAdapter(sql: SQL): Adapter {
       }
       const [res] = await sql<
         AdapterSession[]
-      >`insert into sessions ("userId", expires, "sessionToken")
-      values (${userId}, ${expires}, ${sessionToken})
-      RETURNING *`
+      >`insert into sessions ("userId", expires, "sessionToken") values (${userId}, ${expires}, ${sessionToken}) RETURNING *`
       return res
     },
     async getSessionAndUser(sessionToken: string | undefined): Promise<{
@@ -128,8 +127,8 @@ export default function PostgresJSAdapter(sql: SQL): Adapter {
       }
       const [res] = await sql<
         UserSession[]
-      >`select s.*,u.name,u.email,u."emailVerified", 
-      u.image from sessions s join users u on s."userId" = u.id where s."sessionToken" = ${sessionToken}`
+      >`select s.*,u.name,u.email,u."emailVerified", u.image from sessions s join users u on s."userId" = u.id 
+        where s."sessionToken" = ${sessionToken}`
       if (!res) return null
       const { userId, expires, ...user } = res
       const session = { sessionToken, userId, expires }
@@ -169,11 +168,10 @@ export default function PostgresJSAdapter(sql: SQL): Adapter {
     async createAuthenticator(
       data: AdapterAuthenticator
     ): Promise<AdapterAuthenticator> {
-      const res = await sql<
+      const [res] = await sql<
         AdapterAuthenticator[]
-      >`insert into authenticators ${sql(data)}
-      RETURNING *`
-      return res[0]
+      >`insert into authenticators ${sql(data)} RETURNING *`
+      return res
     },
     async getAuthenticator(credentialID: string) {
       try {
@@ -196,8 +194,7 @@ export default function PostgresJSAdapter(sql: SQL): Adapter {
     async updateAuthenticatorCounter(credentialID: string, newCounter: number) {
       const authenticator = await sql<
         AdapterAuthenticator[]
-      >`UPDATE authenticators set
-      counter = ${newCounter!} where "credentialID" = ${credentialID} RETURNING *`
+      >`UPDATE authenticators set counter = ${newCounter!} where "credentialID" = ${credentialID} RETURNING *`
       if (!authenticator) throw new Error("Authenticator not found.")
       return authenticator[0]
     },

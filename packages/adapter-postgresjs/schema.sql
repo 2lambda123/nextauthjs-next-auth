@@ -1,6 +1,7 @@
 \set ON_ERROR_STOP true
 
----Credit [Supabase](https://supabase.com/docs/guides/database/postgres/dropping-all-tables-in-schema)
+--- Drop All Tables
+--- Credit [Supabase](https://supabase.com/docs/guides/database/postgres/dropping-all-tables-in-schema)
 
 do $$ declare
     r record;
@@ -9,9 +10,9 @@ begin
         execute 'drop table if exists ' || quote_ident(r.tablename) || ' cascade';
     end loop;
 end $$;
----
 
----Credit [Nikola Stanković](https://github.com/viascom/nanoid-postgres)
+--- PG-NANOID [Optional ID generation server-side]
+--- Credit [Nikola Stanković](https://github.com/viascom/nanoid-postgres)
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 DROP FUNCTION IF EXISTS nanoid(int, text, float);
@@ -24,8 +25,8 @@ CREATE OR REPLACE FUNCTION nanoid(
     LANGUAGE plpgsql
     VOLATILE
     PARALLEL SAFE
-    -- Uncomment the following line if you have superuser privileges
-    --LEAKPROOF
+--- Uncomment the following line if you have superuser privileges
+--- LEAKPROOF
 AS
 $$
 DECLARE
