@@ -13,6 +13,7 @@ const sql = postgres({
 
 runBasicTests({
   adapter: PostgresJSAdapter(sql),
+  testWebAuthnMethods: true,
   db: {
     disconnect: async () => {
       await sql.end()
@@ -35,6 +36,11 @@ runBasicTests({
       const { identifier, token } = identifier_token
       const result =
         await sql` select * from verification_token where identifier = ${identifier} and token = ${token}`
+      return result.count !== 0 ? result[0] : null
+    },
+    authenticator: async (credentialID) => {
+      const result =
+        await sql`select * from authenticators where "credentialID" = ${credentialID}`
       return result.count !== 0 ? result[0] : null
     },
   },

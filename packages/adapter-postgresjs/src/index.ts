@@ -52,11 +52,8 @@ export default function PostgresJSAdapter(sql: SQL): Adapter {
       >`delete from verification_token where identifier = ${identifier} and token = ${token} RETURNING identifier, expires, token`
       return res ?? null
     },
-    async createUser(data: Omit<AdapterUser, "id">): Promise<AdapterUser> {
-      const user = {
-        ...data,
-        id: nanoid(),
-      }
+    async createUser(data): Promise<AdapterUser> {
+      const { id, ...user } = data
       const [res] = await sql<AdapterUser[]>`INSERT INTO users ${sql(
         user
       )} RETURNING *`
