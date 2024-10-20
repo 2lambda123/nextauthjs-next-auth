@@ -92,8 +92,8 @@ importers:
         specifier: workspace:*
         version: link:packages/utils
       vite:
-        specifier: ^5.1.8
-        version: 5.1.8(@types/node@20.11.7)(sass@1.70.0)(terser@5.27.0)
+        specifier: ^5.2.14
+        version: 5.2.14(@types/node@20.11.7)(sass@1.70.0)(terser@5.27.0)
       vitest:
         specifier: 1.2.2
         version: 1.2.2(@types/node@20.11.7)(@vitest/ui@1.2.2)(sass@1.70.0)(terser@5.27.0)
@@ -104,8 +104,8 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/frameworks-express
       express:
-        specifier: ^4.20.0
-        version: 4.20.0
+        specifier: ^4.21.0
+        version: 4.21.0
       morgan:
         specifier: ^1.10.0
         version: 1.10.0
@@ -147,8 +147,8 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/next-auth
       nodemailer:
-        specifier: ^6.9.9
-        version: 6.9.9
+        specifier: ^6.9.10
+        version: 6.9.10
       react:
         specifier: 19.0.0-rc-4c2e457c7c-20240522
         version: 19.0.0-rc-4c2e457c7c-20240522
@@ -175,8 +175,8 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/frameworks-qwik
       '@builder.io/qwik':
-        specifier: ^1.7.3
-        version: 1.7.3(@types/node@20.12.7)(sass@1.70.0)(terser@5.27.0)
+        specifier: ^1.9.1
+        version: 1.9.1(@types/node@20.12.7)(sass@1.70.0)(terser@5.27.0)
       '@builder.io/qwik-city':
         specifier: ^1.5.5
         version: 1.5.5(@types/node@20.12.7)(rollup@4.18.0)(sass@1.70.0)(terser@5.27.0)
@@ -208,7 +208,7 @@ importers:
         specifier: '*'
         version: 5.28.2
       vite:
-        specifier: ^5.1.8
+        specifier: ^5.2.14
         version: 5.3.1(@types/node@20.12.7)(sass@1.70.0)(terser@5.27.0)
       vite-tsconfig-paths:
         specifier: ^4.2.1
@@ -676,11 +676,11 @@ importers:
         specifier: 0.6.0
         version: 0.6.0
       cookie:
-        specifier: 0.7.1
-        version: 0.7.1
+        specifier: 0.7.2
+        version: 0.7.2
       jose:
-        specifier: ^5.2.1
-        version: 5.2.1
+        specifier: ^5.2.2
+        version: 5.2.2
       nodemailer:
         specifier: ^6.8.0
         version: 6.9.8
@@ -757,8 +757,8 @@ importers:
         version: 2.6.0
     devDependencies:
       '@builder.io/qwik':
-        specifier: 1.7.3
-        version: 1.7.3(@types/node@20.12.7)(sass@1.70.0)(terser@5.27.0)
+        specifier: 1.9.1
+        version: 1.9.1(@types/node@20.12.7)(sass@1.70.0)(terser@5.27.0)
       '@builder.io/qwik-city':
         specifier: 1.5.5
         version: 1.5.5(@types/node@20.12.7)(rollup@4.18.0)(sass@1.70.0)(terser@5.27.0)
@@ -868,8 +868,8 @@ importers:
         specifier: 15.0.0-rc.1
         version: 15.0.0-rc.1(@opentelemetry/api@1.7.0)(@playwright/test@1.41.2)(react-dom@19.0.0-rc-935180c7e0-20240524(react@18.2.0))(react@18.2.0)(sass@1.70.0)
       nodemailer:
-        specifier: ^6.9.9
-        version: 6.9.9
+        specifier: ^6.9.10
+        version: 6.9.10
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1900,8 +1900,8 @@ packages:
     resolution: {integrity: sha512-Xi/1WqrB91CpZcAXs43OC87+7h89hJczJp43FXUMrvTHGeUsR/udhpz6SZWI/mHh0PFNx6f0A59tPmtDDzYl0Q==}
     engines: {node: '>=16.8.0 <18.0.0 || >=18.11'}
 
-  '@builder.io/qwik@1.7.3':
-    resolution: {integrity: sha512-lVRT4j9redY4X+iOy26U2vhychJgX24aaleu3IuBlEwD8MjCU5k46ApHq+cGqI24/kbqjirPH3SIxtVSByEG/A==}
+  '@builder.io/qwik@1.9.1':
+    resolution: {integrity: sha512-7Dqty4625BJFDcPSy52M2ZS/CpI9yimMFjFyuhyOLjS8BbHVBFtiGIQ0nL133S447K+oU5T2QZzdvjBKsSPlsg==}
     engines: {node: '>=16.8.0 <18.0.0 || >=18.11'}
     hasBin: true
 
@@ -6603,8 +6603,8 @@ packages:
     resolution: {integrity: sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw==}
     engines: {node: '>= 0.6'}
 
-  cookie@0.7.1:
-    resolution: {integrity: sha512-6DnInpx7SJ2AK3+CTUE/ZM0vWTUboZCegxhC2xiIydHR9jNuTAASBrfEpHhiGOZw/nX51bHt6YQl8jsGo4y/0w==}
+  cookie@0.7.2:
+    resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
     engines: {node: '>= 0.6'}
 
   cookiejar@2.1.4:
@@ -7679,8 +7679,8 @@ packages:
     resolution: {integrity: sha512-5/PsL6iGPdfQ/lKM1UuielYgv3BUoJfz1aUwU9vHZ+J7gyvwdQXFEBIEIaxeGf0GIcreATNyBExtalisDbuMqQ==}
     engines: {node: '>= 0.10.0'}
 
-  express@4.20.0:
-    resolution: {integrity: sha512-pLdae7I6QqShF5PnNTCVn4hI91Dx0Grkn2+IAsMTgMIKuQVte2dN9PeGSSAME2FR8anOhVA62QDIUaWVfEXVLw==}
+  express@4.21.0:
+    resolution: {integrity: sha512-VqcNGcj/Id5ZT1LZ/cfihi3ttTn+NJmkli2eZADigjq29qTlWi/hAQ43t/VLPq8+UX06FCEx3ByOYet6ZFblng==}
     engines: {node: '>= 0.10.0'}
 
   extend-shallow@2.0.1:
@@ -7816,6 +7816,10 @@ packages:
 
   finalhandler@1.2.0:
     resolution: {integrity: sha512-5uXcUVftlQMFnWC9qu/svkWv3GTd2PfUhK/3PLkYNAe7FbqJMt3515HaxE6eRL74GdsriiwujiawdaB1BpEISg==}
+    engines: {node: '>= 0.8'}
+
+  finalhandler@1.3.1:
+    resolution: {integrity: sha512-6BN9trH7bp3qvnrRyzsBz+g3lZxTNZTbVO2EV1CS0WIcDbawYVdYvGflME/9QP0h0pYlCDBCTjYa9nZzMDpyxQ==}
     engines: {node: '>= 0.8'}
 
   find-up@4.1.0:
@@ -8854,8 +8858,8 @@ packages:
   jose@4.15.4:
     resolution: {integrity: sha512-W+oqK4H+r5sITxfxpSU+MMdr/YSWGvgZMQDIsNoBDGGy4i7GBPTtvFKibQzW06n3U3TqHjhvBJsirShsEJ6eeQ==}
 
-  jose@5.2.1:
-    resolution: {integrity: sha512-qiaQhtQRw6YrOaOj0v59h3R6hUY9NvxBmmnMfKemkqYmBB0tEc97NbLP7ix44VP5p9/0YHG8Vyhzuo5YBNwviA==}
+  jose@5.2.2:
+    resolution: {integrity: sha512-/WByRr4jDcsKlvMd1dRJnPfS1GVO3WuKyaurJ/vvXcOaUQO8rnNObCQMlv/5uCceVQIq5Q4WLF44ohsdiTohdg==}
 
   js-base64@3.7.7:
     resolution: {integrity: sha512-7rCnleh0z2CkXhH67J8K1Ytz0b2Y+yxTPL+/KOJoa20hfnVQ/3/T6W/KflYI4bRHRagNeXeU2bkNGI3v1oS/lw==}
@@ -10117,16 +10121,16 @@ packages:
   node-releases@2.0.14:
     resolution: {integrity: sha512-y10wOWt8yZpqXmOgRo77WaHEmhYQYGNA6y421PKsKYWEK8aW+cqAphborZDhqfyKrbZEN92CN1X2KbafY2s7Yw==}
 
+  nodemailer@6.9.10:
+    resolution: {integrity: sha512-qtoKfGFhvIFW5kLfrkw2R6Nm6Ur4LNUMykyqu6n9BRKJuyQrqEGwdXXUAbwWEKt33dlWUGXb7rzmJP/p4+O+CA==}
+    engines: {node: '>=6.0.0'}
+
   nodemailer@6.9.4:
     resolution: {integrity: sha512-CXjQvrQZV4+6X5wP6ZIgdehJamI63MFoYFGGPtHudWym9qaEHDNdPzaj5bfMCvxG1vhAileSWW90q7nL0N36mA==}
     engines: {node: '>=6.0.0'}
 
   nodemailer@6.9.8:
     resolution: {integrity: sha512-cfrYUk16e67Ks051i4CntM9kshRYei1/o/Gi8K1d+R34OIs21xdFnW7Pt7EucmVKA0LKtqUGNcjMZ7ehjl49mQ==}
-    engines: {node: '>=6.0.0'}
-
-  nodemailer@6.9.9:
-    resolution: {integrity: sha512-dexTll8zqQoVJEZPwQAKzxxtFn0qTnjdQTchoU6Re9BUUGBJiOy3YMn/0ShTW6J5M0dfQ1NeDeRTTl4oIWgQMA==}
     engines: {node: '>=6.0.0'}
 
   non-layered-tidy-tree-layout@2.0.2:
@@ -10679,10 +10683,6 @@ packages:
 
   postcss@8.4.31:
     resolution: {integrity: sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ==}
-    engines: {node: ^10 || ^12 || >=14}
-
-  postcss@8.4.38:
-    resolution: {integrity: sha512-Wglpdk03BSfXkHoQa3b/oulrotAkwrlLDRSOb9D0bN86FdRyE9lppSp33aHNPgBa0JKCoB+drFLZkQoRRYae5A==}
     engines: {node: ^10 || ^12 || >=14}
 
   postcss@8.4.47:
@@ -11639,8 +11639,8 @@ packages:
     resolution: {integrity: sha512-XGuRDNjXUijsUL0vl6nSD7cwURuzEgglbOaFuZM9g3kwDXOWVTck0jLzjPzGD+TazWbboZYu52/9/XPdUgne9g==}
     engines: {node: '>= 0.8.0'}
 
-  serve-static@1.16.0:
-    resolution: {integrity: sha512-pDLK8zwl2eKaYrs8mrPZBJua4hMplRWJ1tIFksVC3FtBEBnl8dxgeHtsaMS8DhS9i4fLObaon6ABoc4/hQGdPA==}
+  serve-static@1.16.2:
+    resolution: {integrity: sha512-VqpjJZKadQB/PEbEwvFdO43Ax5dFBZ2UECszz8bQ7pi7wt//PWe1P6MN7eCnjsatYtBT6EuiClbjSWP2WrIoTw==}
     engines: {node: '>= 0.8.0'}
 
   server-only@0.0.1:
@@ -11823,10 +11823,6 @@ packages:
   sorcery@0.11.0:
     resolution: {integrity: sha512-J69LQ22xrQB1cIFJhPfgtLuI6BpWRiWu1Y3vSsIwK/eAScqJxd/+CJlUuHQRdX2C9NGFamq+KqNywGgaThwfHw==}
     hasBin: true
-
-  source-map-js@1.2.0:
-    resolution: {integrity: sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==}
-    engines: {node: '>=0.10.0'}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -13200,8 +13196,8 @@ packages:
       vite:
         optional: true
 
-  vite@5.1.8:
-    resolution: {integrity: sha512-mB8ToUuSmzODSpENgvpFk2fTiU/YQ1tmcVJJ4WZbq4fPdGJkFNVcmVL5k7iDug6xzWjjuGDKAuSievIsD6H7Xw==}
+  vite@5.2.14:
+    resolution: {integrity: sha512-TFQLuwWLPms+NBNlh0D9LZQ+HXW471COABxw/9TEUBrjuHMo9BrYBPrN/SYAwIuVL+rLerycxiLT41t4f5MZpA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -15295,7 +15291,7 @@ snapshots:
       '@types/mdx': 2.0.13
       source-map: 0.7.4
       svgo: 3.3.2
-      undici: 5.28.2
+      undici: 5.28.4
       vfile: 6.0.1
       vite: 5.3.1(@types/node@20.12.7)(sass@1.70.0)(terser@5.27.0)
       vite-imagetools: 6.2.9(rollup@4.18.0)
@@ -15311,7 +15307,7 @@ snapshots:
       - supports-color
       - terser
 
-  '@builder.io/qwik@1.7.3(@types/node@20.12.7)(sass@1.70.0)(terser@5.27.0)':
+  '@builder.io/qwik@1.9.1(@types/node@20.12.7)(sass@1.70.0)(terser@5.27.0)':
     dependencies:
       csstype: 3.1.3
       vite: 5.3.1(@types/node@20.12.7)(sass@1.70.0)(terser@5.27.0)
@@ -16271,7 +16267,7 @@ snapshots:
       graphql-request: 6.1.0(encoding@0.1.13)(graphql@16.8.1)
       http-proxy-agent: 7.0.0
       https-proxy-agent: 7.0.2
-      jose: 5.2.1
+      jose: 5.2.2
       js-yaml: 4.1.0
       json-stable-stringify: 1.1.1
       lodash: 4.17.21
@@ -21308,7 +21304,7 @@ snapshots:
 
   cookie@0.6.0: {}
 
-  cookie@0.7.1: {}
+  cookie@0.7.2: {}
 
   cookiejar@2.1.4: {}
 
@@ -22612,7 +22608,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  express@4.20.0:
+  express@4.21.0:
     dependencies:
       accepts: 1.3.8
       array-flatten: 1.1.1
@@ -22626,7 +22622,7 @@ snapshots:
       encodeurl: 2.0.0
       escape-html: 1.0.3
       etag: 1.8.1
-      finalhandler: 1.2.0
+      finalhandler: 1.3.1
       fresh: 0.5.2
       http-errors: 2.0.0
       merge-descriptors: 1.0.3
@@ -22635,11 +22631,11 @@ snapshots:
       parseurl: 1.3.3
       path-to-regexp: 0.1.10
       proxy-addr: 2.0.7
-      qs: 6.11.0
+      qs: 6.13.0
       range-parser: 1.2.1
       safe-buffer: 5.2.1
       send: 0.19.0
-      serve-static: 1.16.0
+      serve-static: 1.16.2
       setprototypeof: 1.2.0
       statuses: 2.0.1
       type-is: 1.6.18
@@ -22667,7 +22663,7 @@ snapshots:
   fake-smtp-server@0.8.0:
     dependencies:
       cli: 1.0.1
-      express: 4.20.0
+      express: 4.21.0
       express-basic-auth: 1.2.1
       lodash: 4.17.21
       mailparser: 3.6.6
@@ -22844,6 +22840,18 @@ snapshots:
     dependencies:
       debug: 2.6.9
       encodeurl: 1.0.2
+      escape-html: 1.0.3
+      on-finished: 2.4.1
+      parseurl: 1.3.3
+      statuses: 2.0.1
+      unpipe: 1.0.0
+    transitivePeerDependencies:
+      - supports-color
+
+  finalhandler@1.3.1:
+    dependencies:
+      debug: 2.6.9
+      encodeurl: 2.0.0
       escape-html: 1.0.3
       on-finished: 2.4.1
       parseurl: 1.3.3
@@ -24094,7 +24102,7 @@ snapshots:
 
   jose@4.15.4: {}
 
-  jose@5.2.1: {}
+  jose@5.2.2: {}
 
   js-base64@3.7.7: {}
 
@@ -25977,11 +25985,11 @@ snapshots:
 
   node-releases@2.0.14: {}
 
+  nodemailer@6.9.10: {}
+
   nodemailer@6.9.4: {}
 
   nodemailer@6.9.8: {}
-
-  nodemailer@6.9.9: {}
 
   non-layered-tidy-tree-layout@2.0.2: {}
 
@@ -26560,12 +26568,6 @@ snapshots:
       nanoid: 3.3.7
       picocolors: 1.1.1
       source-map-js: 1.2.1
-
-  postcss@8.4.38:
-    dependencies:
-      nanoid: 3.3.7
-      picocolors: 1.0.0
-      source-map-js: 1.2.0
 
   postcss@8.4.47:
     dependencies:
@@ -27766,12 +27768,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  serve-static@1.16.0:
+  serve-static@1.16.2:
     dependencies:
-      encodeurl: 1.0.2
+      encodeurl: 2.0.0
       escape-html: 1.0.3
       parseurl: 1.3.3
-      send: 0.18.0
+      send: 0.19.0
     transitivePeerDependencies:
       - supports-color
 
@@ -27994,7 +27996,7 @@ snapshots:
       sirv: 2.0.4
       solid-js: 1.8.12
       terser: 5.27.0
-      undici: 5.28.2
+      undici: 5.28.4
       vite: 5.3.1(@types/node@18.11.10)(sass@1.70.0)(terser@5.27.0)
       vite-plugin-inspect: 0.7.42(rollup@3.29.4)(vite@5.3.1(@types/node@18.11.10)(sass@1.70.0)(terser@5.27.0))
       vite-plugin-solid: 2.9.1(solid-js@1.8.12)(vite@5.3.1(@types/node@18.11.10)(sass@1.70.0)(terser@5.27.0))
@@ -28017,8 +28019,6 @@ snapshots:
       buffer-crc32: 0.2.13
       minimist: 1.2.8
       sander: 0.5.1
-
-  source-map-js@1.2.0: {}
 
   source-map-js@1.2.1: {}
 
@@ -29477,9 +29477,9 @@ snapshots:
       - supports-color
       - typescript
 
-  vite@5.1.8(@types/node@20.11.7)(sass@1.70.0)(terser@5.27.0):
+  vite@5.2.14(@types/node@20.11.7)(sass@1.70.0)(terser@5.27.0):
     dependencies:
-      esbuild: 0.19.12
+      esbuild: 0.20.1
       postcss: 8.4.47
       rollup: 4.18.0
     optionalDependencies:
@@ -29491,7 +29491,7 @@ snapshots:
   vite@5.3.1(@types/node@18.11.10)(sass@1.70.0)(terser@5.27.0):
     dependencies:
       esbuild: 0.21.5
-      postcss: 8.4.38
+      postcss: 8.4.47
       rollup: 4.18.0
     optionalDependencies:
       '@types/node': 18.11.10
@@ -29502,7 +29502,7 @@ snapshots:
   vite@5.3.1(@types/node@20.11.7)(sass@1.70.0)(terser@5.27.0):
     dependencies:
       esbuild: 0.21.5
-      postcss: 8.4.38
+      postcss: 8.4.47
       rollup: 4.18.0
     optionalDependencies:
       '@types/node': 20.11.7
@@ -29513,7 +29513,7 @@ snapshots:
   vite@5.3.1(@types/node@20.12.7)(sass@1.70.0)(terser@5.27.0):
     dependencies:
       esbuild: 0.21.5
-      postcss: 8.4.38
+      postcss: 8.4.47
       rollup: 4.18.0
     optionalDependencies:
       '@types/node': 20.12.7
